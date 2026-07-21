@@ -1,43 +1,4 @@
-async function startSystem() {
-    (async function() {
-    const LICENSE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRWyCea8rzU5InezOIaHDmZR7eV1CFYWBJ4c87Pporiu8cpUqf7JfndHelELbcIsldxolYodvYafdEK/pub?output=csv"; 
-
-    async function checkAuth() {
-        try {
-            const response = await fetch(LICENSE_URL);
-            const csvData = await response.text();
-            
-            // তোমার ডিভাইসের ইউনিক আইডি (যেমন: হার্ডওয়্যার আইডি বা ইউনিক ইমেইল)
-            const deviceID = localStorage.getItem("my_app_uid") || prompt("আপনার লাইসেন্স কী দিন:");
-            
-            if (!deviceID) return false;
-
-            // শিটের ডেটা প্রসেস করা
-            const lines = csvData.split("\n");
-            for (let line of lines) {
-                let [id, status] = line.split(",");
-                if (id.trim() === deviceID.trim()) {
-                    if (status.trim() === "Active") {
-                        localStorage.setItem("my_app_uid", deviceID);
-                        return true;
-                    } else {
-                        alert("আপনার একাউন্ট ব্লকড! সাপোর্টের সাথে যোগাযোগ করুন।");
-                        localStorage.removeItem("my_app_uid");
-                        return false;
-                    }
-                }
-            }
-            alert("ভুল লাইসেন্স কী!");
-            return false;
-        } catch (e) {
-            return false; // ইন্টারনেট না থাকলে অফলাইন মোড বা এরর
-        }
-    }
-
-    const isAuthorized = await checkAuth();
-    if (!isAuthorized) return; // অথোরাইজড না হলে প্যানেল আসবে না
-
-    // --- এখান থেকে তোমার মেইন কোড শুরু ---
+  // --- এখান থেকে তোমার মেইন কোড শুরু ---
    (function() {
     // ১. আগের প্যানেল ও স্টাইল মুছে ফেলা
     const oldPanel = document.getElementById('qtx-ultimate-panel');
@@ -539,5 +500,3 @@ async function startSystem() {
         style.remove();
     });
     })();
-    })();
-}
